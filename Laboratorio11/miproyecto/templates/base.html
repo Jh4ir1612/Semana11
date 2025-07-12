@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mi Blog{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1><a href="{% url 'blog:post_list' %}">Mi Blog</a></h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'blog:post_list' %}">Inicio</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'blog:post_create' %}">Nuevo Post</a></li>
+                    <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Iniciar sesión</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; {% now "Y" %} Mi Blog. Todos los derechos reservados.</p>
+    </footer>
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+</body>
+</html>

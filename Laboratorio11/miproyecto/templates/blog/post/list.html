@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Posts{% endblock %}
+
+{% block content %}
+    <h2>Lista de Posts</h2>
+    
+    {% if page_obj %}
+        <ul>
+            {% for post in page_obj %}
+                <li>
+                    <h3><a href="{% url 'blog:post_detail' post.published.year post.published.month post.published.day post.slug %}">
+                        {{ post.title }}
+                    </a></h3>
+                    <p>Publicado el {{ post.published|date:"d/m/Y" }} por {{ post.author.username }}</p>
+                    <p>{{ post.content|truncatewords:30 }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; primera</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+                {% endif %}
+
+                <span class="current">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">siguiente</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p>No hay posts disponibles.</p>
+    {% endif %}
+{% endblock %}
